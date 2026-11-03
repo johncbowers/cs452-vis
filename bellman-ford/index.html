@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="An interactive visualization of Bellman-Ford relaxation and negative-cycle detection.">
+  <title>Bellman–Ford: Relax Every Tense Edge</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="page-shell">
+    <a class="collection-link" href="../">← All CS 452 visualizations</a>
+
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">CS 452 · Shortest paths</p>
+        <h1>Bellman–Ford relaxes every tense edge</h1>
+        <p class="lede">Each phase scans every edge. After <i>V</i> − 1 phases, any edge that is still tense reveals a reachable negative cycle.</p>
+      </div>
+      <div class="definition" aria-label="Definition of a tense edge">
+        <span class="definition-label">Tense edge</span>
+        <span><i>u</i> → <i>v</i> is tense when <strong>dist(<i>u</i>) + w(<i>u</i> → <i>v</i>) &lt; dist(<i>v</i>)</strong>.</span>
+      </div>
+    </header>
+
+    <section class="example-picker" aria-labelledby="example-heading">
+      <div>
+        <p id="example-heading">Choose a graph</p>
+        <p id="example-description">Positive edge weights; the algorithm stops when no tense edges remain.</p>
+      </div>
+      <div class="example-buttons" role="group" aria-label="Graph example">
+        <button id="positive-example" class="example-button selected" type="button" aria-pressed="true">Positive weights</button>
+        <button id="negative-example" class="example-button" type="button" aria-pressed="false">Negative cycle</button>
+      </div>
+    </section>
+
+    <section class="control-bar" aria-label="Animation controls">
+      <div class="button-group">
+        <button id="previous-button" type="button">← Previous</button>
+        <button id="next-button" class="primary" type="button">Next edge →</button>
+        <button id="phase-button" type="button">Finish phase</button>
+        <button id="play-button" type="button" aria-pressed="false">Play</button>
+        <button id="reset-button" class="quiet" type="button">Reset</button>
+      </div>
+      <label class="speed-control" for="speed-range">
+        <span>Animation speed</span>
+        <input id="speed-range" type="range" min="0.6" max="2" value="1" step="0.2">
+      </label>
+      <div class="step-count" aria-label="Current algorithm progress">
+        <span id="phase-label">Initialization</span>
+        <span id="edge-label">0 / 8 edges</span>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <div class="graph-column">
+        <div id="status-message" class="status-message" aria-live="polite"></div>
+
+        <div id="graph-wrap" class="graph-wrap">
+          <svg id="graph" role="img" aria-labelledby="graph-title graph-description">
+            <title id="graph-title">Bellman-Ford graph</title>
+            <desc id="graph-description">A directed weighted graph showing tentative shortest-path distances, tense edges, predecessor edges, and the edge currently being scanned.</desc>
+            <defs>
+              <marker id="arrow-normal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z"></path>
+              </marker>
+              <marker id="arrow-tense" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z"></path>
+              </marker>
+              <marker id="arrow-pred" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z"></path>
+              </marker>
+              <marker id="arrow-relaxed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z"></path>
+              </marker>
+              <marker id="arrow-current" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z"></path>
+              </marker>
+              <marker id="arrow-cycle" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z"></path>
+              </marker>
+              <filter id="soft-shadow" x="-40%" y="-40%" width="180%" height="180%">
+                <feDropShadow dx="0" dy="3" stdDeviation="4" flood-opacity="0.18"></feDropShadow>
+              </filter>
+            </defs>
+            <g id="edges-layer"></g>
+            <g id="weights-layer"></g>
+            <g id="nodes-layer"></g>
+          </svg>
+
+          <div class="legend" aria-label="Diagram legend">
+            <span><i class="legend-line tense"></i>Tense</span>
+            <span><i class="legend-line pred"></i>Predecessor</span>
+            <span><i class="legend-line relaxed"></i>Just relaxed</span>
+            <span><i class="legend-line current"></i>Just scanned</span>
+            <span><i class="legend-line cycle"></i>Negative cycle</span>
+            <span class="drag-instruction">Drag vertices to rearrange</span>
+          </div>
+        </div>
+      </div>
+
+      <aside class="side-column" aria-label="Algorithm state">
+        <section class="panel phase-panel">
+          <div class="panel-heading">
+            <h2>Current phase</h2>
+            <span id="phase-summary">Initialization</span>
+          </div>
+          <div class="phase-progress" role="progressbar" aria-label="Bellman-Ford phases" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0">
+            <div id="phase-progress-bar"></div>
+          </div>
+          <p id="phase-explanation">Initialize distances and predecessors.</p>
+        </section>
+
+        <section class="panel order-panel">
+          <div class="panel-heading">
+            <h2>Edge order</h2>
+            <span>one full scan per phase</span>
+          </div>
+          <ol id="edge-order" class="edge-order"></ol>
+        </section>
+
+        <section class="panel state-panel">
+          <div class="panel-heading">
+            <h2>Vertex labels</h2>
+            <span>tentative paths from s</span>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">v</th>
+                  <th scope="col">dist(v)</th>
+                  <th scope="col">pred(v)</th>
+                </tr>
+              </thead>
+              <tbody id="state-table-body"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel pseudocode-panel">
+          <div class="panel-heading">
+            <h2>Bellman–Ford</h2>
+            <span>Erickson’s relaxation view</span>
+          </div>
+          <ol class="pseudocode" aria-label="Bellman-Ford pseudocode">
+            <li data-line="init"><code>InitSSSP(s)</code></li>
+            <li data-line="repeat"><code>repeat V − 1 times</code></li>
+            <li data-line="edges" class="indent"><code>for every edge u → v</code></li>
+            <li data-line="tense" class="indent-2"><code>if u → v is tense</code></li>
+            <li data-line="relax" class="indent-3"><code>Relax(u → v)</code></li>
+            <li data-line="check"><code>if any edge is still tense</code></li>
+            <li data-line="report" class="indent"><code>report a negative cycle</code></li>
+          </ol>
+        </section>
+      </aside>
+    </section>
+
+    <footer>
+      <p><strong>What to watch:</strong> A phase scans every edge in a fixed order. A relaxation can make another edge tense later in the same phase—or after that edge has already been scanned.</p>
+      <p class="source-note">Terminology and algorithm structure follow Jeff Erickson’s <cite>Algorithms</cite>, Chapter 8.</p>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

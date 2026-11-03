@@ -222,6 +222,120 @@ h1 {
   transform: rotate(29deg);
 }
 
+.bellman-preview {
+  background:
+    radial-gradient(circle at 63% 48%, rgba(181, 44, 44, 0.08), transparent 7rem),
+    linear-gradient(145deg, var(--blue-pale), #f7f2e8);
+}
+
+.phase-rings {
+  position: absolute;
+  border: 2px dashed rgba(49, 92, 125, 0.22);
+  border-radius: 50%;
+}
+
+.ring-one {
+  inset: 27% 22% 18% 23%;
+}
+
+.ring-two {
+  inset: 13% 10% 8% 11%;
+}
+
+.bf-edge {
+  position: absolute;
+  z-index: 1;
+  height: 5px;
+  background: var(--purple);
+  transform-origin: left center;
+}
+
+.bf-edge::after {
+  position: absolute;
+  top: -5px;
+  right: -3px;
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 10px solid var(--purple);
+  content: "";
+}
+
+.bf-edge-one {
+  left: 20%;
+  top: 53%;
+  width: 28%;
+  transform: rotate(-27deg);
+}
+
+.bf-edge-two {
+  left: 49%;
+  top: 38%;
+  width: 27%;
+  transform: rotate(30deg);
+}
+
+.bf-edge-three {
+  left: 48%;
+  top: 67%;
+  width: 31%;
+  transform: rotate(-91deg);
+}
+
+.bf-edge-four {
+  left: 76%;
+  top: 57%;
+  width: 29%;
+  transform: rotate(145deg);
+}
+
+.bf-edge.negative {
+  background: repeating-linear-gradient(90deg, #b52c2c 0 9px, transparent 9px 15px);
+}
+
+.bf-edge.negative::after {
+  border-left-color: #b52c2c;
+}
+
+.preview-node.bf-source {
+  left: 12%;
+  top: 47%;
+  border-color: var(--blue);
+  background: var(--blue);
+  color: white;
+}
+
+.preview-node.bf-b {
+  left: 43%;
+  top: 22%;
+  border-color: var(--orange);
+}
+
+.preview-node.bf-c {
+  right: 15%;
+  top: 47%;
+  border-color: #b52c2c;
+}
+
+.preview-node.bf-d {
+  left: 43%;
+  bottom: 11%;
+  border-color: #b52c2c;
+}
+
+.cycle-total {
+  position: absolute;
+  right: 7%;
+  bottom: 7%;
+  padding: 0.3rem 0.5rem;
+  border-radius: 6px;
+  background: rgba(255, 253, 248, 0.9);
+  color: #8e2424;
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
 .card-copy {
   align-self: center;
   padding: clamp(1.6rem, 4vw, 3.1rem);

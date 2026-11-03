@@ -7,6 +7,7 @@ The repository is a build-free static site suitable for GitHub Pages. The root `
 ## Current visualizations
 
 - [`dijkstra-wavefront/`](dijkstra-wavefront/) — Dijkstra’s algorithm as an expanding wavefront
+- [`bellman-ford/`](bellman-ford/) — Bellman–Ford edge relaxation and negative-cycle detection
 
 ## Adding another visualization
 
