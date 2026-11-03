@@ -46,17 +46,45 @@
 
         <a class="visualization-card" href="bellman-ford/">
           <div class="preview bellman-preview" aria-hidden="true">
-            <div class="phase-rings ring-one"></div>
-            <div class="phase-rings ring-two"></div>
-            <div class="bf-edge bf-edge-one"></div>
-            <div class="bf-edge bf-edge-two"></div>
-            <div class="bf-edge bf-edge-three negative"></div>
-            <div class="bf-edge bf-edge-four negative"></div>
-            <span class="preview-node bf-source">s</span>
-            <span class="preview-node bf-b">b</span>
-            <span class="preview-node bf-c">c</span>
-            <span class="preview-node bf-d">d</span>
-            <span class="cycle-total">cycle weight = −3</span>
+            <svg class="bellman-thumbnail" viewBox="0 0 560 330" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <marker id="bf-arrow-normal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+                  <path d="M 0 0 L 10 5 L 0 10 z"></path>
+                </marker>
+                <marker id="bf-arrow-cycle" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+                  <path d="M 0 0 L 10 5 L 0 10 z"></path>
+                </marker>
+              </defs>
+
+              <text class="bf-phase-label" x="24" y="31">AFTER V − 1 PHASES</text>
+
+              <path class="bf-path normal" d="M 99 165 L 149 165"></path>
+              <path class="bf-path normal" d="M 204 149 L 274 106"></path>
+              <path class="bf-path cycle" d="M 329 90 L 409 90"></path>
+              <path class="bf-path cycle tense" d="M 428 117 L 382 213"></path>
+              <path class="bf-path cycle" d="M 352 217 Q 299 180 300 121"></path>
+              <path class="bf-path normal" d="M 399 240 L 469 240"></path>
+
+              <g class="bf-weight" transform="translate(124 146)"><rect x="-13" y="-11" width="26" height="22" rx="7"></rect><text>2</text></g>
+              <g class="bf-weight" transform="translate(235 122)"><rect x="-13" y="-11" width="26" height="22" rx="7"></rect><text>2</text></g>
+              <g class="bf-weight cycle" transform="translate(369 70)"><rect x="-13" y="-11" width="26" height="22" rx="7"></rect><text>1</text></g>
+              <g class="bf-weight cycle" transform="translate(424 166)"><rect x="-13" y="-11" width="26" height="22" rx="7"></rect><text>2</text></g>
+              <g class="bf-weight cycle" transform="translate(300 177)"><rect x="-17" y="-11" width="34" height="22" rx="7"></rect><text>−6</text></g>
+              <g class="bf-weight" transform="translate(434 220)"><rect x="-13" y="-11" width="26" height="22" rx="7"></rect><text>3</text></g>
+
+              <g class="bf-mini-node source" transform="translate(70 165)"><circle r="29"></circle><text>s</text></g>
+              <g class="bf-mini-node" transform="translate(180 165)"><circle r="29"></circle><text>a</text></g>
+              <g class="bf-mini-node cycle" transform="translate(300 90)"><circle r="29"></circle><text>b</text></g>
+              <g class="bf-mini-node cycle" transform="translate(440 90)"><circle r="29"></circle><text>c</text></g>
+              <g class="bf-mini-node cycle" transform="translate(370 240)"><circle r="29"></circle><text>d</text></g>
+              <g class="bf-mini-node" transform="translate(500 240)"><circle r="29"></circle><text>t</text></g>
+
+              <g class="bf-cycle-callout" transform="translate(118 276)">
+                <rect x="0" y="0" width="184" height="34" rx="17"></rect>
+                <text x="92" y="22">negative cycle: 1 + 2 − 6 = −3</text>
+              </g>
+              <text class="bf-tense-label" x="465" y="164">still tense</text>
+            </svg>
           </div>
           <div class="card-copy">
             <p class="topic">Bellman–Ford algorithm</p>
