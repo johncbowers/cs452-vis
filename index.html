@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Interactive visualizations for CS 452: Algorithm Design and Analysis.">
+  <title>CS 452 Visualizations</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <main>
+    <header class="site-header">
+      <p class="eyebrow">James Madison University · CS 452</p>
+      <h1>Algorithm visualizations</h1>
+      <p class="lede">Interactive explanations for Algorithm Design and Analysis. Each visualization can be stepped through and explored directly in the browser.</p>
+    </header>
+
+    <section aria-labelledby="shortest-paths-heading">
+      <div class="section-heading">
+        <div>
+          <p class="section-number">01</p>
+          <h2 id="shortest-paths-heading">Shortest paths</h2>
+        </div>
+        <p>Relaxation, tentative distances, and predecessor trees</p>
+      </div>
+
+      <div class="visualization-list">
+        <a class="visualization-card" href="dijkstra-wavefront/">
+          <div class="preview" aria-hidden="true">
+            <div class="preview-half processed"></div>
+            <div class="preview-half unprocessed"></div>
+            <div class="preview-wavefront"></div>
+            <div class="preview-edge edge-one"></div>
+            <div class="preview-edge edge-two"></div>
+            <span class="preview-node source">s</span>
+            <span class="preview-node frontier">u</span>
+            <span class="preview-node target">v</span>
+          </div>
+          <div class="card-copy">
+            <p class="topic">Dijkstra’s algorithm</p>
+            <h3>The expanding wavefront</h3>
+            <p>Watch vertices cross from unprocessed to processed as tense edges are relaxed. Follow the priority queue, <span class="math">dist(v)</span>, and <span class="math">pred(v)</span> at every step.</p>
+            <span class="open-label">Open visualization <span aria-hidden="true">→</span></span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <footer>
+      <p>CS 452 · Algorithm Design and Analysis</p>
+      <p>Additional visualizations will be added to this collection.</p>
+    </footer>
+  </main>
+</body>
+</html>
